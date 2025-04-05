@@ -4,19 +4,35 @@ import axios from 'axios';
 const Launches = () => {
     const [launches, setLaunches] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [year, setYear] = useState('');
 
     useEffect(() => {
-        // Pozivamo svoj .NET API
-        axios.get('http://localhost:5000/api/SpaceXData') // URL tvoje .NET API aplikacije
+        axios.get('https://localhost:7068/api/SpaceXData/getData')
             .then((response) => {
-                setLaunches(response.data); // Podaci dolaze iz API-a
-                setLoading(false); // Postavljamo loading na false
+                console.log('GET DATA response:', 'been there');
+                setLaunches(response.data);
+                setLoading(false);
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
                 setLoading(false);
             });
-    }, []); // Prazan array znaèi da useEffect pokreæe samo jednom kad se komponenta uèita
+    }, []);
+
+    const handleSearch = () => {
+        if (!year) return;
+
+        setLoading(true);
+        axios.get(`https://localhost:7068/api/SpaceXData/filter?year=${year}`)
+            .then((response) => {
+                setLaunches(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error(error);
+                setLoading(false);
+            });
+    };
 
     if (loading) {
         return <p>Loading...</p>;
@@ -25,15 +41,25 @@ const Launches = () => {
     return (
         <div>
             <h1>SpaceX Launches</h1>
+
+            <input
+                type="number"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                placeholder="Enter Year"
+            />
+            <button onClick={handleSearch}>Search</button>
+
             <ul>
                 {launches.map((launch) => (
                     <li key={launch.id}>
-                        {launch.name} - {launch.date}
+                        <h3>{launch.name}</h3>
+                        <p>{launch.dateUtc || launch.date}</p>
                     </li>
                 ))}
             </ul>
         </div>
-    ); 
+    );
 };
 
 export default Launches;
