@@ -1,9 +1,17 @@
-﻿namespace LaunchData.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
+namespace LaunchData.Models
 {
     public class Flickr
     {
-        public int Id { get; set; }
-        public List<string> Small { get; set; }
-        public List<string> Original { get; set; }
+        [Key]
+        public int? Id { get; set; }
+
+        [JsonPropertyName("small")]
+        public List<string>? Small { get; set; } = new();
+
+        [JsonPropertyName("original")]
+        public List<string>? Original { get; set; } = new();
     }
 }

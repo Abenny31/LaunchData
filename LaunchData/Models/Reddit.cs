@@ -1,11 +1,23 @@
-﻿namespace LaunchData.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
+namespace LaunchData.Models
 {
     public class Reddit
     {
-        public int Id { get; set; }
-        public string Campaign { get; set; }
-        public string Launch { get; set; }
-        public string Media { get; set; }
-        public string Recovery { get; set; }
+        [Key]
+        public int? Id { get; set; }
+
+        [JsonPropertyName("campaign")]
+        public string? Campaign { get; set; }
+
+        [JsonPropertyName("launch")]
+        public string? Launch { get; set; }
+
+        [JsonPropertyName("media")]
+        public string? Media { get; set; }
+
+        [JsonPropertyName("recovery")]
+        public string? Recovery { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace LaunchData.Controllers
         private readonly AppDbContext _context;
         private readonly HttpClient _httpClient;
 
-        public SpaceXDataController(AppDbContext context,HttpClient httpClient)
+        public SpaceXDataController(AppDbContext context, HttpClient httpClient)
         {
             _context = context;
             _httpClient = httpClient;
@@ -26,19 +26,26 @@ namespace LaunchData.Controllers
             try
             {
 
-                if (!_context.LaunchModels.Any())
-            {
-                var response = await _httpClient.GetStringAsync("https://api.spacexdata.com/v5/launches");
-                List<LaunchModel> launches = new List<LaunchModel>();
-               
+                    var response = await _httpClient.GetStringAsync("https://api.spacexdata.com/v5/launches");
+                    List<LaunchModel> launches = new List<LaunchModel>();
+
                     launches = JsonSerializer.Deserialize<List<LaunchModel>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                
-                if (launches != null)
+
+
+                if (launches != null && launches.Count > 0)
                 {
-                    _context.LaunchModels.AddRange(launches);
-                    await _context.SaveChangesAsync();
+
+                    var existingLaunchIds = _context.LaunchModels.Select(l => l.Id).ToHashSet();
+
+                    var newLaunches = launches.Where(l => !existingLaunchIds.Contains(l.Id)).ToList();
+
+                    if (newLaunches.Count > 0)
+                    {
+                        _context.LaunchModels.AddRange(newLaunches);
+                        await _context.SaveChangesAsync();
+                    }
                 }
-            }
+
             }
             catch (Exception e)
             {
@@ -53,12 +60,12 @@ namespace LaunchData.Controllers
         {
             var query = _context.LaunchModels.AsQueryable();
 
-            if (year.HasValue)
-                query = query.Where(l => l.DateUtc.Year == year.Value);
+            //if (year.HasValue)
+            //    query = query.Where(l => l.DateUtc.HasValue == year.Value);
 
-            if (flightNumber.HasValue)
-                query = query.Where(l => l.Id == flightNumber.ToString());
-
+            //if (flightNumber.HasValue)
+            //    query = query.Where(l => l.Id == flightNumber.ToString());
+            
             return Ok(await query.ToListAsync());
         }
 

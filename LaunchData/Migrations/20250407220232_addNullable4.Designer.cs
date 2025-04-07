@@ -4,6 +4,7 @@ using LaunchData.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LaunchData.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250407220232_addNullable4")]
+    partial class addNullable4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,7 +225,7 @@ namespace LaunchData.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Relational:JsonPropertyName", "date_unix");
 
-                    b.Property<DateTime?>("DateUtc")
+                    b.Property<DateTime>("DateUtc")
                         .HasColumnType("datetime2")
                         .HasAnnotation("Relational:JsonPropertyName", "date_utc");
 
@@ -272,7 +275,7 @@ namespace LaunchData.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Relational:JsonPropertyName", "static_fire_date_unix");
 
-                    b.Property<DateTime?>("StaticFireDateUtc")
+                    b.Property<DateTime>("StaticFireDateUtc")
                         .HasColumnType("datetime2")
                         .HasAnnotation("Relational:JsonPropertyName", "static_fire_date_utc");
 

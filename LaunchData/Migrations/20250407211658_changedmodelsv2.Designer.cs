@@ -4,6 +4,7 @@ using LaunchData.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LaunchData.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250407211658_changedmodelsv2")]
+    partial class changedmodelsv2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,6 +34,7 @@ namespace LaunchData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CoreId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "core");
 
@@ -51,14 +55,22 @@ namespace LaunchData.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "landing_success");
 
                     b.Property<string>("LandingType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "landing_type");
 
                     b.Property<string>("Landpad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "landpad");
+
+                    b.Property<string>("LandpadId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "landpad");
 
                     b.Property<string>("LaunchId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LaunchModelId")
@@ -81,32 +93,6 @@ namespace LaunchData.Migrations
                     b.HasAnnotation("Relational:JsonPropertyName", "cores");
                 });
 
-            modelBuilder.Entity("LaunchData.Models.CrewMember", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Crew")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LaunchModelId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LaunchModelId");
-
-                    b.ToTable("CrewMember");
-
-                    b.HasAnnotation("Relational:JsonPropertyName", "crew");
-                });
-
             modelBuilder.Entity("LaunchData.Models.Failure", b =>
                 {
                     b.Property<int>("Id")
@@ -120,16 +106,18 @@ namespace LaunchData.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "altitude");
 
                     b.Property<string>("LaunchId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LaunchModelId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Reason")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "reason");
 
-                    b.Property<int?>("Time")
+                    b.Property<int>("Time")
                         .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "time");
 
@@ -183,10 +171,12 @@ namespace LaunchData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.PrimitiveCollection<string>("Original")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "original");
 
                     b.PrimitiveCollection<string>("Small")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "small");
 
@@ -202,69 +192,84 @@ namespace LaunchData.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool?>("AutoUpdate")
+                    b.Property<bool>("AutoUpdate")
                         .HasColumnType("bit")
                         .HasAnnotation("Relational:JsonPropertyName", "auto_update");
 
                     b.PrimitiveCollection<string>("Capsules")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "capsules");
 
+                    b.PrimitiveCollection<string>("Crew")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "crew");
+
                     b.Property<string>("DateLocal")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "date_local");
 
                     b.Property<string>("DatePrecision")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "date_precision");
 
-                    b.Property<long?>("DateUnix")
+                    b.Property<long>("DateUnix")
                         .HasColumnType("bigint")
                         .HasAnnotation("Relational:JsonPropertyName", "date_unix");
 
-                    b.Property<DateTime?>("DateUtc")
+                    b.Property<DateTime>("DateUtc")
                         .HasColumnType("datetime2")
                         .HasAnnotation("Relational:JsonPropertyName", "date_utc");
 
                     b.Property<string>("Details")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "details");
 
-                    b.Property<int?>("FairingsId")
+                    b.Property<int>("FairingsId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FlightNumber")
+                    b.Property<int>("FlightNumber")
                         .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "flight_number");
 
                     b.Property<string>("LaunchLibraryId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "launch_library_id");
 
                     b.Property<string>("Launchpad")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "launchpad");
 
-                    b.Property<int?>("LinksId")
+                    b.Property<int>("LinksId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "name");
 
-                    b.Property<bool?>("Net")
+                    b.Property<bool>("Net")
                         .HasColumnType("bit")
                         .HasAnnotation("Relational:JsonPropertyName", "net");
 
-                    b.PrimitiveCollection<string>("PayloadIds")
+                    b.PrimitiveCollection<string>("Payloads")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "payloads");
 
                     b.Property<string>("Rocket")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "rocket");
 
                     b.PrimitiveCollection<string>("Ships")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "ships");
 
@@ -280,11 +285,11 @@ namespace LaunchData.Migrations
                         .HasColumnType("bit")
                         .HasAnnotation("Relational:JsonPropertyName", "success");
 
-                    b.Property<bool?>("Tbd")
+                    b.Property<bool>("Tbd")
                         .HasColumnType("bit")
                         .HasAnnotation("Relational:JsonPropertyName", "tbd");
 
-                    b.Property<bool?>("Upcoming")
+                    b.Property<bool>("Upcoming")
                         .HasColumnType("bit")
                         .HasAnnotation("Relational:JsonPropertyName", "upcoming");
 
@@ -311,6 +316,7 @@ namespace LaunchData.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "name");
 
@@ -330,6 +336,7 @@ namespace LaunchData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Article")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "article");
 
@@ -340,6 +347,7 @@ namespace LaunchData.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Presskit")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "presskit");
 
@@ -347,14 +355,17 @@ namespace LaunchData.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Webcast")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "webcast");
 
                     b.Property<string>("Wikipedia")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "wikipedia");
 
                     b.Property<string>("YoutubeId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "youtube_id");
 
@@ -380,10 +391,12 @@ namespace LaunchData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "name");
 
                     b.Property<string>("Region")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "region");
 
@@ -403,10 +416,12 @@ namespace LaunchData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Large")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "large");
 
                     b.Property<string>("Small")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "small");
 
@@ -428,10 +443,12 @@ namespace LaunchData.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "mass_kg");
 
                     b.Property<string>("Orbit")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "orbit");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "type");
 
@@ -449,18 +466,22 @@ namespace LaunchData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Campaign")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "campaign");
 
                     b.Property<string>("Launch")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "launch");
 
                     b.Property<string>("Media")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "media");
 
                     b.Property<string>("Recovery")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "recovery");
 
@@ -478,10 +499,12 @@ namespace LaunchData.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "name");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "type");
 
@@ -497,13 +520,6 @@ namespace LaunchData.Migrations
                         .HasForeignKey("LaunchModelId");
                 });
 
-            modelBuilder.Entity("LaunchData.Models.CrewMember", b =>
-                {
-                    b.HasOne("LaunchData.Models.LaunchModel", null)
-                        .WithMany("Crew")
-                        .HasForeignKey("LaunchModelId");
-                });
-
             modelBuilder.Entity("LaunchData.Models.Failure", b =>
                 {
                     b.HasOne("LaunchData.Models.LaunchModel", null)
@@ -515,11 +531,15 @@ namespace LaunchData.Migrations
                 {
                     b.HasOne("LaunchData.Models.Fairings", "Fairings")
                         .WithMany()
-                        .HasForeignKey("FairingsId");
+                        .HasForeignKey("FairingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("LaunchData.Models.Links", "Links")
                         .WithMany()
-                        .HasForeignKey("LinksId");
+                        .HasForeignKey("LinksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Fairings");
 
@@ -567,8 +587,6 @@ namespace LaunchData.Migrations
             modelBuilder.Entity("LaunchData.Models.LaunchModel", b =>
                 {
                     b.Navigation("Cores");
-
-                    b.Navigation("Crew");
 
                     b.Navigation("Failures");
                 });

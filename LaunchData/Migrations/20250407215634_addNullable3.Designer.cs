@@ -4,6 +4,7 @@ using LaunchData.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LaunchData.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250407215634_addNullable3")]
+    partial class addNullable3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,7 +205,7 @@ namespace LaunchData.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool?>("AutoUpdate")
+                    b.Property<bool>("AutoUpdate")
                         .HasColumnType("bit")
                         .HasAnnotation("Relational:JsonPropertyName", "auto_update");
 
@@ -211,48 +214,54 @@ namespace LaunchData.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "capsules");
 
                     b.Property<string>("DateLocal")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "date_local");
 
                     b.Property<string>("DatePrecision")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "date_precision");
 
-                    b.Property<long?>("DateUnix")
+                    b.Property<long>("DateUnix")
                         .HasColumnType("bigint")
                         .HasAnnotation("Relational:JsonPropertyName", "date_unix");
 
-                    b.Property<DateTime?>("DateUtc")
+                    b.Property<DateTime>("DateUtc")
                         .HasColumnType("datetime2")
                         .HasAnnotation("Relational:JsonPropertyName", "date_utc");
 
                     b.Property<string>("Details")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "details");
 
-                    b.Property<int?>("FairingsId")
+                    b.Property<int>("FairingsId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FlightNumber")
+                    b.Property<int>("FlightNumber")
                         .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "flight_number");
 
                     b.Property<string>("LaunchLibraryId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "launch_library_id");
 
                     b.Property<string>("Launchpad")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "launchpad");
 
-                    b.Property<int?>("LinksId")
+                    b.Property<int>("LinksId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "name");
 
-                    b.Property<bool?>("Net")
+                    b.Property<bool>("Net")
                         .HasColumnType("bit")
                         .HasAnnotation("Relational:JsonPropertyName", "net");
 
@@ -261,6 +270,7 @@ namespace LaunchData.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "payloads");
 
                     b.Property<string>("Rocket")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "rocket");
 
@@ -280,11 +290,11 @@ namespace LaunchData.Migrations
                         .HasColumnType("bit")
                         .HasAnnotation("Relational:JsonPropertyName", "success");
 
-                    b.Property<bool?>("Tbd")
+                    b.Property<bool>("Tbd")
                         .HasColumnType("bit")
                         .HasAnnotation("Relational:JsonPropertyName", "tbd");
 
-                    b.Property<bool?>("Upcoming")
+                    b.Property<bool>("Upcoming")
                         .HasColumnType("bit")
                         .HasAnnotation("Relational:JsonPropertyName", "upcoming");
 
@@ -515,11 +525,15 @@ namespace LaunchData.Migrations
                 {
                     b.HasOne("LaunchData.Models.Fairings", "Fairings")
                         .WithMany()
-                        .HasForeignKey("FairingsId");
+                        .HasForeignKey("FairingsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("LaunchData.Models.Links", "Links")
                         .WithMany()
-                        .HasForeignKey("LinksId");
+                        .HasForeignKey("LinksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Fairings");
 
